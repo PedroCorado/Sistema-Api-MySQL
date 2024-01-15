@@ -1,34 +1,58 @@
-import requests
-from tkinter import *
+import customtkinter
+import mysql.connector
+from flask import Flask
 
-janela = Tk()#Cria a janela do tkinter
-janela.title('COMING SOON')#Define o titulo da pagina
+def capturar_informacoes():
+    text_name = name_input_field.get()
+    text_age = campo_entrada_years.get()
+    text_ssn = campo_entrada_cpf.get()
+    return text_name, text_age, text_ssn
 
-tittle_text = Label(janela, text="ENSIRA OS DADOS A BAIXO")#Escreve um texto na janela
-tittle_text.grid(column=0,row=0)#Define a posição do texto
+def enviar_dados():
+    text_name, text_age, text_ssn = capturar_informacoes()
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='Pedrocarlos22!',
+        database='usuarios'
+    )
+
+    cursor = conexao.cursor()
+
+    comando = f'INSERT INTO users (nome, idade, cpf) VALUES ("{text_name}","{text_age}","{text_ssn}")'
+    cursor.execute(comando)
+    conexao.commit()
+
+    cursor.close()
+    conexao.close()
+
+janela = customtkinter.CTk()
+janela.geometry("500x300")
+janela.title('PLATAFORMA DE CADASTRO DE USUARIOS')
+
+titulo = customtkinter.CTkLabel(janela,text="CADASTRO")
+titulo.pack(padx=10 ,pady=10)
+
+name_input_field = customtkinter.CTkEntry(janela,placeholder_text="Nome: ")
+name_input_field.pack(padx=10 ,pady=10)
 
 
-inserir_nome_usuario = Label(janela, text='Name:')#Insira o nome
-inserir_nome_usuario.grid(column=0,row=1)#Posição
-campo_entrada_name = Entry(janela)#Cria um box de texto
-campo_entrada_name.grid(column=1,row=1)#Define a posição do box
+campo_entrada_years = customtkinter.CTkEntry(janela,placeholder_text="Idade: ")
+campo_entrada_years.pack(padx=10 ,pady=10)
 
-inserir_idade_usuario = Label(janela, text='Years:')#Insira a idade
-inserir_idade_usuario.grid(column=0,row=2)#Posição
-campo_entrada_years = Entry(janela)#Cria um box de texto
-campo_entrada_years.grid(column=1,row=2)#Define a posição do box
 
-inserir_cpf_usuario = Label(janela, text='CPF:')#Insira o cpf
-inserir_cpf_usuario.grid(column=0,row=3)#Posição
-campo_entrada_cpf = Entry(janela)#Cria um box de texto
-campo_entrada_cpf.grid(column=1,row=3)#Define a posição do box
+campo_entrada_cpf = customtkinter.CTkEntry(janela,placeholder_text="CPF: ")
+campo_entrada_cpf.pack(padx=10 ,pady=10)
 
-botao_enviar_credencial = Button(janela,text='Enviar')
-botao_enviar_credencial.grid(column=0,row=4)
+
+botao_enviar_credencial = customtkinter.CTkButton(janela, text='Enviar', command=enviar_dados)
+botao_enviar_credencial.pack(padx=10 ,pady=10)
+
+janela.mainloop()
+
+app = Flask(__name__)
 
 
 
-
-
-
-janela.mainloop()#Encerra o loop da janela
+app.route()
