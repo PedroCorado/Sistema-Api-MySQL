@@ -1,6 +1,6 @@
 import customtkinter
 import mysql.connector
-from flask import Flask
+
 
 def capturar_informacoes():
     text_name = name_input_field.get()
@@ -26,7 +26,8 @@ def enviar_dados():
 
     cursor.close()
     conexao.close()
-
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("green")
 janela = customtkinter.CTk()
 janela.geometry("500x300")
 janela.title('PLATAFORMA DE CADASTRO DE USUARIOS')
@@ -50,9 +51,3 @@ botao_enviar_credencial = customtkinter.CTkButton(janela, text='Enviar', command
 botao_enviar_credencial.pack(padx=10 ,pady=10)
 
 janela.mainloop()
-
-app = Flask(__name__)
-
-
-
-app.route()
